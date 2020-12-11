@@ -1,4 +1,5 @@
 import React from 'react'
+import Button from '../../UI/Button/Button'
 
 const orderSummary = (props) => {
     const ingedientSummary = Object.entries(props.ingredients)
@@ -19,6 +20,8 @@ const orderSummary = (props) => {
                 {ingedientSummary}
             </ul>
             <p>Continue to Checkout?</p>
+            <Button buttonType='Danger' clicked={props.purchaseCanceled}>CANCEL</Button>
+            <Button buttonType='Success' clicked={props.purchaseContinued}>CONTINUE</Button>
         </>
     )
 }
