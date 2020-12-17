@@ -16,18 +16,8 @@ const rootReducer = combineReducers({
   order: orderReducer
 })
 
-const logger = (store) => {
-  return next => {
-    return action => {
-      console.log('[MW] dispatching ', action)
-      const result = next(action)
-      console.log('[MW] next State', store.getState())
-      return result
-    }
-  }
-}
 
-const store = createStore(rootReducer, composeEnhancers(applyMiddleware(logger, thunk)))
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)))
 
 ReactDOM.render(  
   <React.StrictMode>
