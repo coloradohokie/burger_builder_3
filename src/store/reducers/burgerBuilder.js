@@ -24,7 +24,8 @@ const reducer = (state = initialState, action) => {
                     cheese: action.ingredients.cheese,
                     meat: action.ingredients.meat
                 },
-                error: false
+                error: false,
+                totalPrice: 5
             }
 
         case actionTypes.GET_INGREDIENTS_FAILED:
@@ -34,7 +35,6 @@ const reducer = (state = initialState, action) => {
             }
 
         case actionTypes.ADD_INGREDIENT:
-            console.log(action)
             return {
                 ...state,
                 totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredient],
