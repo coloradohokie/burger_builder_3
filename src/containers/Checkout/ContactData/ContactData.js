@@ -5,6 +5,8 @@ import axios from '../../../axios-orders'
 import Spinner from '../../../components/UI/Spinner/Spinner'
 import Input from '../../../components/UI/Input/Input'
 import {connect} from 'react-redux'
+import * as actions from '../../../store/actions/index'
+import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler'
 
 class ContactData extends Component {
     state = {
@@ -90,7 +92,6 @@ class ContactData extends Component {
             },
         },
         formIsValid: false,
-        loading: false
     }
 
     checkValidity(value, rules) {
@@ -113,7 +114,7 @@ class ContactData extends Component {
 
     orderHandler = (e) => {
         e.preventDefault()
-        this.setState({loading: true})
+
         let formData = {}
         for (let element in this.state.orderForm) {
             formData[element] = this.state.orderForm[element].value
@@ -122,16 +123,9 @@ class ContactData extends Component {
             ingredients: this.props.ingredients,
             price: this.props.price,
             orderData: formData
-         }
-        axios.post('/orders.json', order)
-            .then(response => {
-                this.setState({loading: false})
-                this.props.history.push('/')
-            })
-            .catch(error => {
-                console.log(error)
-                this.setState({loading: false})
-            })
+        }
+
+        this.props.onPushOrder(order)
 
     }
 
@@ -179,7 +173,7 @@ class ContactData extends Component {
                 <Button buttonType="Success" clicked={this.orderHandler} disabled={!this.state.formIsValid}>Order</Button>
             </form>
         )
-        if (this.state.loading) {
+        if (this.props.loading) {
             form = <Spinner />
         }
         return (
@@ -194,8 +188,15 @@ class ContactData extends Component {
 const mapStateToProps = state => {
     return {
         ingredients: state.burgerBuilder.ingredients,
-        price: state.burgerBuilder.totalPrice
+        price: state.burgerBuilder.totalPrice,
+        loading: state.order.loading
     }
 }
 
-export default connect(mapStateToProps)(ContactData)
+const mapDispatchToProps = dispatch => {
+    return {
+        onPushOrder: (orderData) => dispatch(actions.pushOrder(orderData))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData, axios))

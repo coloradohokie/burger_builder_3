@@ -6,4 +6,6 @@ export {
     removeIngredient
 } from './burgerBuilder'
 
-export {} from './order'
+export {
+    pushOrder
+} from './order'
