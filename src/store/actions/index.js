@@ -8,5 +8,6 @@ export {
 
 export {
     pushOrder,
-    purchaseInit
+    purchaseInit,
+    getOrders
 } from './order'
